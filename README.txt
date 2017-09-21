@@ -1,7 +1,7 @@
 md-newspapers Solr Core
 =================
 
-md-newspapers core configuration repository.
+This is version **2.0.0** of the md-newspapers core configuration repository.
 
 
 Check out this repository to the `cores` directory of the solr installation.
@@ -10,5 +10,4 @@ Check out this repository to the `cores` directory of the solr installation.
 git clone git@bitbucket.org:umd-lib/md-newspapers-core.git md-newspapers
 ```
 
-Solr version prior to 5.x also requires the core to be added to the `solr.xml`
-file.
+This is a 6.x core.
