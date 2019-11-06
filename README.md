@@ -1,19 +1,13 @@
 # solr-md-newspapers
 
-This is version **2.0.0** of the md-newspapers core configuration repository.
+## Introduction
 
+Note: Previous versions of this repository were used as a Solr configuration
+directory on solr.lib.umd.edu. This repository has now been changed to support
+creating a Docker image containing the data.
 
-Check out this repository to the `cores` directory of the solr installation.
-
-```
-git clone git@bitbucket.org:umd-lib/md-newspapers-core.git md-newspapers
-```
-
-This is a 6.x core.
-
-## License
-
-See the [LICENSE](LICENSE.txt) file for license rights and limitations.
+When making updates to the data or configuration, a new Docker image should be
+created.
 
 ## Building the Docker Image
 
