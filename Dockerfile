@@ -19,26 +19,14 @@ RUN /opt/solr/bin/solr start && \
     /opt/solr/bin/solr create_core -c md-newspapers && \
     /opt/solr/bin/solr stop
 # Replace the schema file
-# COPY conf /apps/solr/data/textbook/conf/
-ADD conf/schema.xml /apps/solr/data/md-newspapers/conf/schema.xml
-ADD conf/currency.xml /apps/solr/data/md-newspapers/conf/currency.xml
-# Remove schemaless configuration
-RUN cd /apps/solr/data/md-newspapers/conf/ && \
-    rm managed-schema && \
-    mv solrconfig.xml solrconfig-default.xml && \
-    xmlstarlet ed \
-        -s "/config" -t elem -n "schemaFactory" -v "" \
-        -i "/config/schemaFactory" -t attr -n "class" -v "ClassicIndexSchemaFactory" \
-        -d "/config/updateProcessor[@name='add-schema-fields']" \
-        -d "/config/updateRequestProcessorChain[@name='add-unknown-fields-to-the-schema']" \
-        solrconfig-default.xml > solrconfig.xml
+COPY conf /apps/solr/data/md-newspapers/conf/
 # Add the data to be loaded
 ADD data.csv /tmp/data.csv
 # Load the data to md-newspapers core
 RUN /opt/solr/bin/solr start && sleep 3 && \
     curl 'http://localhost:8983/solr/md-newspapers/update?commit=true' -H 'Content-Type: text/xml' --data-binary '<delete><query>*:*</query></delete>' && \
-    curl 'http://localhost:8983/solr/md-newspapers/update/csv?commit=true' \
-        --data-binary @/tmp/data.csv -H 'Content-type:application/csv'&& \
+    curl 'http://localhost:8983/solr/md-newspapers/update/csv?commit=true&f.year_facets_list.split=true&f.year_facets_list.separator=%20' \
+        --data-binary @/tmp/data.csv -H 'Content-type:text/csv; charset=utf-8' && \
     /opt/solr/bin/solr stop
 # For deceasing the size of the image
 FROM solr:8.1.1-slim
